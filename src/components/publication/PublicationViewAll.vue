@@ -1,45 +1,18 @@
 <script setup>
-
-import { reactive, ref } from 'vue';
+import { publicationService } from '../../services/publicationService';
 import PublicationView from './PublicationView.vue';
 
+const {data, error, isFinished} = publicationService.useGetAll()
 
-const publications = ref([])
-
-const state = reactive({
-    error: false,
-})
-
-
-const getAllPublications = async () => {
-
-    try {
-        const response = await fetch('https://vara.onrender.com/api/publications')
-        const data = await response.json()
-
-        if (response.status > 300) {
-            if (response.status === 404) {
-                throw new Error("Dataa ei löytynyt")
-            }
-            throw new Error(data.msg)
-        }
-
-        publications.value = data.publications
-    } catch (e) {
-        console.error(e)
-        state.error = true
-    }
-}
-
-getAllPublications()
 
 </script>
 
 <template>
-    <div v-if="state.error">Valitettavasti postauksia ei ollut juuri nyt saatavilla</div>
-    <template v-else>
+    <div v-if="error">Valitettavasti postauksia ei ollut juuri nyt saatavilla</div>
+    <div v-else-if="!isFinished">Ladataan...</div>
+    <template v-else-if="data?.publications">
         <div class="container">
-            <div class="item" v-for="publication in publications">
+            <div class="item" v-for="publication in data.publications">
                 <PublicationView :publication="publication"></PublicationView>
             </div>
         </div>
