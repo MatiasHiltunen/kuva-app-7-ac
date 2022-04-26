@@ -12,11 +12,9 @@ import PublicationView from './PublicationView.vue';
 </script>
 
 <template>
-
     <div v-if="error">Tapahtui virhe</div>
     <div v-else-if="!isFinished"></div>
-    <div v-else-if="!data">
-    
+    <div v-else-if="data">
         <PublicationView :publication="data.publication"></PublicationView>
     </div>
 </template>
