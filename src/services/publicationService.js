@@ -1,13 +1,13 @@
 import { useApi } from "../composables/api"
 
 export const publicationService = {
-    useGetAll(){
+    useGetAll() {
         return useApi('/publications').json()
     },
-    useGetById(publicationId){
-        return useApi('/publications/' + publicationId).json()
+    useGetById(publicationId) {
+        return useApi(`/publications/${publicationId}`).json()
     },
-    usePost(payload){
+    usePost(payload) {
         return useApi('/publications').post(payload).json()
     }
 }
